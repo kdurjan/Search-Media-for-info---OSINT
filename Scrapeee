@@ -1,0 +1,30 @@
+from urllib.request import urlopen as ureq
+import win32com.client as wincl
+from bs4 import BeautifulSoup as soup
+
+
+sp = wincl.Dispatch("SAPI.spVoice")
+
+url = "https://www.foxnews.com/"
+client = ureq(url)
+print(client)
+
+page_html = client.read()
+print(page_html)
+
+client.close
+page_soup = soup(page_html , "html.parser")
+
+
+articles = page_soup.find("div" , {"h2 class= "title" })
+
+
+
+i = 1
+for x in articles:
+   title = x.find("h2").text
+   para = x.find("p").text
+
+   sp.Speak(title)
+   sp.Speak(para)
+   i=i+1
